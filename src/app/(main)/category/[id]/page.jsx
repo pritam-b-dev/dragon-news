@@ -1,6 +1,7 @@
 import React from "react";
 import LeftSideBar from "../../../../components/homepage/news/LeftSideBar";
 import RightSideBar from "../../../../components/homepage/news/RightSideBar";
+import NewsCard from "../../../../components/homepage/news/NewsCard";
 
 async function getCategories() {
   const res = await fetch(
@@ -34,9 +35,9 @@ const NewsCategoryPage = async ({ params }) => {
 
       <div className="bg-pink-300 col-span-6">
         All news
-        {news.data.map((n, ind) => {
-          return <div key={ind}>{n.title}</div>;
-        })}
+        {news.data.map((n, ind) => (
+          <NewsCard key={n._id} news={n} />
+        ))}
       </div>
       <div className="col-span-3">
         <RightSideBar />
