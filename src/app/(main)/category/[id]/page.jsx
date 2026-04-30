@@ -2,28 +2,11 @@ import React from "react";
 import LeftSideBar from "../../../../components/homepage/news/LeftSideBar";
 import RightSideBar from "../../../../components/homepage/news/RightSideBar";
 import NewsCard from "../../../../components/homepage/news/NewsCard";
-
-async function getCategories() {
-  const res = await fetch(
-    "https://openapi.programming-hero.com/api/news/categories",
-  );
-  const data = await res.json();
-  return data;
-}
-
-async function getNewsbyCategoryId(categoryId) {
-  const res = await fetch(
-    `https://openapi.programming-hero.com/api/news/category/${categoryId}`,
-  );
-  const data = await res.json();
-  return data;
-}
+import { getCategories, getNewsbyCategoryId } from "../../../../lib/data";
 
 const NewsCategoryPage = async ({ params }) => {
   const { id } = await params;
-
   const categories = await getCategories();
-
   const news = await getNewsbyCategoryId(id);
 
   return (
@@ -33,11 +16,13 @@ const NewsCategoryPage = async ({ params }) => {
         <LeftSideBar categories={categories} activeId={id} />
       </div>
 
-      <div className="bg-pink-300 col-span-6">
-        All news
-        {news.data.map((n, ind) => (
-          <NewsCard key={n._id} news={n} />
-        ))}
+      <div className=" col-span-6 p-5">
+        <strong className="mb-5 block">Dragon News</strong>
+        {news.data.length === 0 ? (
+          <p>No news found!</p>
+        ) : (
+          news.data.map((n, ind) => <NewsCard key={n._id} news={n} />)
+        )}
       </div>
       <div className="col-span-3">
         <RightSideBar />

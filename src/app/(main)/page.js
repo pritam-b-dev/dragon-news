@@ -3,28 +3,12 @@
 import LeftSideBar from "../../components/homepage/news/LeftSideBar";
 import NewsCard from "../../components/homepage/news/NewsCard";
 import RightSideBar from "../../components/homepage/news/RightSideBar";
+import { getCategories, getNewsbyCategoryId } from "../../lib/data";
 
 const default_category_id = "08";
-
-async function getCategories() {
-  const res = await fetch(
-    "https://openapi.programming-hero.com/api/news/categories",
-  );
-  const data = await res.json();
-  return data;
-}
-
-async function getNewsByCategoryId(categoryId) {
-  const res = await fetch(
-    `https://openapi.programming-hero.com/api/news/category/${categoryId}`,
-  );
-  const data = await res.json();
-  return data;
-}
-
 export default async function Home() {
   const categories = await getCategories();
-  const news = await getNewsByCategoryId(default_category_id);
+  const news = await getNewsbyCategoryId(default_category_id);
 
   return (
     <div className="grid grid-cols-12 gap-3 container mx-auto">
@@ -33,8 +17,8 @@ export default async function Home() {
         <LeftSideBar categories={categories} activeId={default_category_id} />
       </div>
 
-      <div className="bg-pink-300 col-span-6">
-        All news
+      <div className="col-span-6">
+        <strong className="mb-5 block">Dragon News</strong>
         {news.data.map((n, ind) => (
           <NewsCard key={n._id} news={n} />
         ))}
