@@ -23,7 +23,7 @@ const nav = (
 
 const NavBar = () => {
   return (
-    <div className="navbar bg-base-100  container mx-auto my-5">
+    <div className="navbar bg-base-100  container mx-auto ">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -56,7 +56,9 @@ const NavBar = () => {
       </div>
       <div className="navbar-end ">
         <Image src={userImage} alt="user logo" className="mr-4" />
-        <a className="bg-black text-white px-8 py-1">Login</a>
+        <Link href={"/login"} className="bg-black text-white px-8 py-1">
+          Login
+        </Link>
       </div>
     </div>
   );
