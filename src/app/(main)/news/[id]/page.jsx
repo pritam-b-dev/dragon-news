@@ -4,6 +4,15 @@ import Image from "next/image";
 import RightSideBar from "../../../../components/homepage/news/RightSideBar";
 import Link from "next/link";
 
+export const generateMetadata = async ({ params }) => {
+  const { id } = await params;
+  const news = await getNewsDetailsById(id);
+  return {
+    title: news.title,
+    description: news.description,
+  };
+};
+
 const NewsDetailsPage = async ({ params }) => {
   const { id } = await params;
   const news = await getNewsDetailsById(id);
