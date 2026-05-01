@@ -4,6 +4,8 @@ import React from "react";
 import userImage from "@/assets/user.png";
 import Image from "next/image";
 import NavLink from "./NavLink";
+import { authClient } from "../../lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const nav = (
   <>
@@ -22,6 +24,14 @@ const nav = (
 );
 
 const NavBar = () => {
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+  const router = useRouter();
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.push("/login");
+  };
+
   return (
     <div className="navbar bg-base-100  container mx-auto ">
       <div className="navbar-start">
@@ -55,10 +65,30 @@ const NavBar = () => {
         <ul className="menu menu-horizontal px-1">{nav}</ul>
       </div>
       <div className="navbar-end ">
-        <Image src={userImage} alt="user logo" className="mr-4" />
-        <Link href={"/login"} className="bg-black text-white px-8 py-1">
-          Login
-        </Link>
+        {isPending ? (
+          ""
+        ) : user ? (
+          <>
+            <h2 className="mr-4">hello! {user.name}</h2>
+            <Image
+              src={user.image}
+              alt="user logo"
+              className="mr-4"
+              width={50}
+              height={50}
+            />
+            <button
+              onClick={handleSignOut}
+              className="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link href={"/login"} className="bg-black text-white px-8 py-1">
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );
